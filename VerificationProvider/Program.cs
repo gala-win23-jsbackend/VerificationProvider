@@ -14,12 +14,13 @@ var host = new HostBuilder()
         services.ConfigureFunctionsApplicationInsights();
         services.AddDbContext<DataContext>(x => x.UseSqlServer(Environment.GetEnvironmentVariable("VerificationRequestDatabase")));
         services.AddScoped<IVerificationService, VerificationService>();
-        services.AddScoped<IVerificationCleanerService, VerificationCleanerService>();
+       
         services.AddScoped<IValidateVerificationCodeService, ValidateVerificationCodeService>();
+        services.AddScoped<IVerificationCleanerService, VerificationCleanerService>();
     })
     .Build();
 
-
+// Här gör vi migration
 using (var scope = host.Services.CreateScope())
 {
     try

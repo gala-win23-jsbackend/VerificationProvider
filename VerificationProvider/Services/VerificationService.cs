@@ -26,7 +26,7 @@ public class VerificationService(ILogger<VerificationService> logger, IServicePr
         }
         catch (Exception ex)
         {
-            _logger.LogError($"ERROR : GenerateVerificationCode.UnpackVerificationRequest() :: {ex.Message}");
+            _logger.LogError($"ERROR : VerificationService.UnpackVerificationRequest() :: {ex.Message}");
 
         }
         return null!;
@@ -42,7 +42,7 @@ public class VerificationService(ILogger<VerificationService> logger, IServicePr
         }
         catch (Exception ex)
         {
-            _logger.LogError($"ERROR : GenerateVerificationCode.GenerateCode() :: {ex.Message}");
+            _logger.LogError($"ERROR : VerificationService.GenerateCode() :: {ex.Message}");
 
         }
         return null!;
@@ -71,7 +71,7 @@ public class VerificationService(ILogger<VerificationService> logger, IServicePr
         }
         catch (Exception ex)
         {
-            _logger.LogError($"ERROR : GenerateVerificationCode.SaveVerificationRequest() :: {ex.Message}");
+            _logger.LogError($"ERROR : VerificationService.SaveVerificationRequest() :: {ex.Message}");
             return false;
         }
     }
@@ -88,33 +88,38 @@ public class VerificationService(ILogger<VerificationService> logger, IServicePr
                     To = verificationRequest.Email,
                     Subject = $"Verification Code {code}",
                     HtmlBody = $@"
-                        <html lang ='en'>
-                            <head> 
-                            <meta charset='UTF-8'>
-                            <meta name='viewport' content='width=device-width, initial-scale=1.0'>
-                            <title>Verification Code</title>
+                        <!DOCTYPE html>
+                            <html lang=""en"">
+                            <head>
+                                <meta charset=""UTF-8"">
+                                <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+                                <title>Verification Code</title>
                             </head>
-                        <body>
-                            <div style='color:#191919; max-width:500px'>
-                                <div style='background-color: #4F85F6; color: white; text-align: center; padding: 20px 0;'>
-                                    <h1 style='font-weight: 400;'>Verification Code</h1>
-                                </div>
-                                <div style='background-color: #f4f4f4; padding: 1rem 2rem;'>
-                                    <p> Dear user,</p>
-                                    <p> We received a request to sign in to your account using e-mail {verificationRequest.Email}. Please verify your account using this verification code:</p>
-                                    <p class='code' style='font-weight:700; text-align:center; font-size: 48px; letter-spacing:8px;'>
-                                        {code}
-                                    </p>   
-                                    <div style'color: #191919; font-size: 11px;'>
-                                         <p> If you did not request this code, it is possible that someone else is trying to access the Silicon Account {verificationRequest.Email}. This email can not receive replies. For more information, call the Silicon Help Center</p>
+                            <body>
+    
+   
+                                    <div style='color:#191919; max-width:500px'>
+                                        <div style='background-color: #4F85F6; color: white; text-align: center; padding: 20px 0;'>
+                                            <h1 style='font-weight: 400;'>Verification Code</h1>
+                                        </div>
+                                        <div style='background-color: #f4f4f4; padding: 1rem 2rem;'>
+                                            <p> Dear user,</p>
+                                            <p> We received a request to sign in to your account using e-mail {{verificationRequest.Email}}. Please verify your account using this verification code:</p>
+                                            <p class='code' style='font-weight:700; text-align:center; font-size: 48px; letter-spacing:8px;'>
+                                                {{code}}
+                                            </p>   
+                                            <div style'color: #191919; font-size: 11px;'>
+                                                 <p> If you did not request this code, it is possible that someone else is trying to access the Silicon Account {{verificationRequest.Email}}. This email can not receive replies. For more information, call the Silicon Help Center</p>
+                                            </div>
+                                        </div>
+                                        <div style='color: #191919; text-align:center; font-size: 11px;'>
+                                            <p> Silicon, Sveavägen 1, SE-123 45 Stockholm, Sweden</p>
+                                        </div>
                                     </div>
-                                </div>
-                            <div style='color: #191919; text-align:center; font-size: 11px;'>
-                                <p> Silicon, Sveavägen 1, SE-123 45 Stockholm, Sweden</p>
-                            </div>
-                        </div>
-                    </body>
-                </html>
+                            </body>
+
+                            </body>
+                            </html>
                         ",
                     PlainText = $"Please verify your account using this verification code: {code}. If you did not request this code, it is possible that someone else is trying to access the Silicon Account {verificationRequest.Email}. This email can not receive replies. For more information, call the Silicon Help Center"
                 };
@@ -123,7 +128,7 @@ public class VerificationService(ILogger<VerificationService> logger, IServicePr
         }
         catch (Exception ex)
         {
-            _logger.LogError($"ERROR : GenerateVerificationCode.GenerateEmailRequest() :: {ex.Message}");
+            _logger.LogError($"ERROR : VerificationService.GenerateEmailRequest() :: {ex.Message}");
         }
         return null!;
     }
@@ -142,7 +147,7 @@ public class VerificationService(ILogger<VerificationService> logger, IServicePr
         }
         catch (Exception ex)
         {
-            _logger.LogError($"ERROR : GenerateVerificationCode.GenerateServiceBusEmailRequest() :: {ex.Message}");
+            _logger.LogError($"ERROR : VerificationService.GenerateServiceBusEmailRequest() :: {ex.Message}");
 
         }
         return null!;
