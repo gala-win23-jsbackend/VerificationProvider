@@ -6,16 +6,10 @@ using VerificationProvider.Services;
 
 namespace VerificationProvider.Functions;
 
-public class ValidateVerificationCode
+public class ValidateVerificationCode(ILogger<ValidateVerificationCode> logger, IValidateVerificationCodeService validateVerificationCodeService)
 {
-    private readonly ILogger<ValidateVerificationCode> _logger;
-    private readonly IValidateVerificationCodeService _validateVerificationCodeService;
-
-    public ValidateVerificationCode(ILogger<ValidateVerificationCode> logger, IValidateVerificationCodeService validateVerificationCodeService)
-    {
-        _logger = logger;
-        _validateVerificationCodeService = validateVerificationCodeService;
-    }
+    private readonly ILogger<ValidateVerificationCode> _logger = logger;
+    private readonly IValidateVerificationCodeService _validateVerificationCodeService = validateVerificationCodeService;
 
     [Function("ValidateVerificationCode")]
     public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Function, "post", Route = "verify")] HttpRequest req)
@@ -36,7 +30,7 @@ public class ValidateVerificationCode
             }
 
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             _logger.LogError($"ERROR : ValidateVerificationCode.Run() :: {ex.Message}");
 
