@@ -10,9 +10,9 @@ namespace VerificationProvider.Functions;
 
 public class GenerateVerificationCode(ILogger<GenerateVerificationCode> logger, IVerificationService verificationService)
 {
-    private readonly ILogger<GenerateVerificationCode> _logger=logger;
+   
+    private readonly ILogger<GenerateVerificationCode> _logger = logger;
     private readonly IVerificationService _verificationService = verificationService;
-
 
     [Function(nameof(GenerateVerificationCode))]
     [ServiceBusOutput("email_request", Connection = "ServiceBusConnection")]
@@ -23,19 +23,19 @@ public class GenerateVerificationCode(ILogger<GenerateVerificationCode> logger, 
     {
         try
         {
-            var verificationRequest = _verificationService.UnpackVerificationRequest(message);
-            if (verificationRequest != null)
+            var verficationToken = verificationService.UnpackVerificationRequest(message);
+            if (verficationToken != null)
             {
-                var code = _verificationService.GenerateCode();
+                var code = verificationService.GenerateCode();
                 if (!string.IsNullOrEmpty(code))
                 {
-                    var result = await _verificationService.SaveVerificationRequest(verificationRequest, code);
+                    var result = await verificationService.SaveVerificationRequest(verficationToken, code);
                     if (result)
                     {
-                        var emailRequest = _verificationService.GenerateEmailRequest(verificationRequest, code);
+                        var emailRequest = verificationService.GenerateEmailRequest(verficationToken, code);
                         if (emailRequest != null)
                         {
-                            string payload = _verificationService.GenerateServiceBusEmailRequest(emailRequest);
+                            var payload = verificationService.GenerateServiceBusEmailRequest(emailRequest);
                             if (!string.IsNullOrEmpty(payload))
                             {
                                 await messageActions.CompleteMessageAsync(message);
@@ -46,10 +46,12 @@ public class GenerateVerificationCode(ILogger<GenerateVerificationCode> logger, 
                 }
             }
         }
-        catch(Exception ex)  
+
+        catch (Exception ex)
         {
-            _logger.LogError($"ERROR : GenerateVerificationCode.Run :: {ex.Message}");
+            _logger.LogError($"ERROR : GenerateVerificationCode.Run() :: {ex.Message}");
         }
+
         return null!;
     }
 

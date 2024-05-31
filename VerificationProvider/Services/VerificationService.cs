@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using VerificationProvider.Data.Contexts;
 using VerificationProvider.Models;
 
+
 namespace VerificationProvider.Services;
 
 public class VerificationService(ILogger<VerificationService> logger, IServiceProvider serviceProvider) : IVerificationService
@@ -63,7 +64,12 @@ public class VerificationService(ILogger<VerificationService> logger, IServicePr
             }
             else
             {
-                context.VerificationRequests.Add(new Data.Entities.VerificationRequestEntity() { Email = verificationRequest.Email, Code = code });
+                context.VerificationRequests.Add(new Data.Entities.VerificationRequestEntity() 
+                { 
+                    Email = verificationRequest.Email,                    
+                    Code = code
+                });
+                
             }
 
             await context.SaveChangesAsync();
@@ -106,7 +112,7 @@ public class VerificationService(ILogger<VerificationService> logger, IServicePr
                                             <p> Dear user,</p>
                                             <p> We received a request to sign in to your account using e-mail {{verificationRequest.Email}}. Please verify your account using this verification code:</p>
                                             <p class='code' style='font-weight:700; text-align:center; font-size: 48px; letter-spacing:8px;'>
-                                                {{code}}
+                                                {code}
                                             </p>   
                                             <div style'color: #191919; font-size: 11px;'>
                                                  <p> If you did not request this code, it is possible that someone else is trying to access the Silicon Account {{verificationRequest.Email}}. This email can not receive replies. For more information, call the Silicon Help Center</p>

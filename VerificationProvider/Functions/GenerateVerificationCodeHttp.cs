@@ -1,3 +1,4 @@
+using Azure.Messaging.ServiceBus;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
@@ -8,16 +9,10 @@ using VerificationProvider.Services;
 
 namespace VerificationProvider.Functions;
 
-public class GenerateVerificationCodeHttp
+public class GenerateVerificationCodeHttp(ILogger<GenerateVerificationCodeHttp> logger, IVerificationService verificationService)
 {
-    private readonly ILogger<GenerateVerificationCodeHttp> _logger;
-    private readonly IVerificationService _verificationService;
-
-    public GenerateVerificationCodeHttp(ILogger<GenerateVerificationCodeHttp> logger, IVerificationService verificationService)
-    {
-        _logger = logger;
-        _verificationService = verificationService;
-    }
+    private readonly ILogger<GenerateVerificationCodeHttp> _logger = logger;
+    private readonly IVerificationService _verificationService = verificationService;
 
     [Function("GenerateVerificationCodeHttp")]
     public async Task<IActionResult> RunAsync([HttpTrigger(AuthorizationLevel.Function, "post", Route = null)] HttpRequest req)
