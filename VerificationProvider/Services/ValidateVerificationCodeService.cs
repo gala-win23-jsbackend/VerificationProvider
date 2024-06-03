@@ -27,7 +27,7 @@ public class ValidateVerificationCodeService(ILogger<ValidateVerificationCodeSer
                 return true;
             }
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             _logger.LogError($"ERROR : ValidateVerificationCode.ValidateCodeAsync() :: {ex.Message}");
         }
@@ -46,7 +46,7 @@ public class ValidateVerificationCodeService(ILogger<ValidateVerificationCodeSer
                     return validateRequest;
             }
         }
-        catch (System.Exception ex)
+        catch (Exception ex)
         {
             _logger.LogError($"ERROR :ValidateVerificationCode.UnpackValidateRequestAsync() :: {ex.Message}");
 
